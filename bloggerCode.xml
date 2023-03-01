@@ -1,0 +1,165 @@
+<b:if cond='data:blog.url == data:blog.homepageUrl'>
+            
+<style>
+              
+.label-posts-container .label-post img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+  display: flex;
+}
+
+.label-posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+	background: #fff;
+	padding: 24px;
+	margin: 32px 0;
+	align-items: center;
+}
+
+.label-posts-container .label-post {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  max-width: 700px;
+  box-shadow: 0 4px 40px -8px rgba(0, 0, 0, 0.3);
+}
+
+.label-posts-container .thumb-container {
+  flex: 1;
+  width: 100%;
+}
+
+.label-posts-container .text-content {
+  flex: 2;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.label-posts-container .post-title-container {
+  text-decoration: none;
+}
+
+.label-posts-container .post-title-container:hover {
+  text-decoration: underline;
+}
+
+.label-posts-container .post-title {
+  margin: 0;
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #ef233c;
+line-height: 1.2;
+}
+
+.label-posts-container .summary {
+  line-height: 1.8;
+  color: #023047;
+  opacity: 0.9;
+  position: relative;
+  height: 80px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.label-posts-container .summary::after {
+  content: &quot;&quot;;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 32px;
+  width: 100%;
+  background: linear-gradient(transparent, #fff);
+}
+
+.label-posts-container .read-more-btn {
+  color: darkblue;
+  font-weight: bold;
+  font-size: 13px;
+  text-transform: uppercase;
+  text-decoration: none;
+  align-self: flex-end;
+}
+
+@media (max-width: 640px) {
+  .label-posts-container .label-post {
+    flex-direction: column;
+  }
+
+  .label-posts-container .label-post img {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+              
+</style>
+
+<div class='label-posts-container'>
+    Posts related to AI:
+</div>
+
+<script>
+    
+    const labelPostsContainer = document.querySelector(&#39;.label-posts-container&#39;);
+    
+    const populateLabelPosts = (data) =&gt; {
+    data.forEach(post =&gt; {
+        const thumbContainer = document.createElement(&#39;a&#39;);
+        thumbContainer.href = post.link[post.link.length - 1].href;
+        thumbContainer.classList.add(&#39;thumb-container&#39;);
+    
+        const thumbnail = document.createElement(&#39;img&#39;);
+        thumbnail.src = post.media$thumbnail.url.replace(&#39;/s72&#39;, &#39;/s300&#39;);
+    
+        thumbContainer.appendChild(thumbnail);
+    
+        const textContent = document.createElement(&#39;div&#39;);
+        textContent.classList.add(&#39;text-content&#39;);
+    
+        const postTitleContainer = document.createElement(&#39;a&#39;);
+        postTitleContainer.href = post.link[post.link.length - 1].href;
+        postTitleContainer.classList.add(&#39;post-title-container&#39;);	
+    
+        const title = document.createElement(&#39;h3&#39;);
+        title.classList.add(&#39;post-title&#39;);
+        title.innerHTML = post.title.$t;
+    
+        postTitleContainer.appendChild(title);
+        
+        const summary = document.createElement(&#39;div&#39;);
+        summary.classList.add(&#39;summary&#39;);
+        summary.innerHTML = post.summary.$t;
+    
+        const readMoreBtn = document.createElement(&#39;a&#39;);
+        readMoreBtn.classList.add(&#39;read-more-btn&#39;);
+        readMoreBtn.href = post.link[post.link.length - 1].href;
+        readMoreBtn.innerHTML = &#39;Read More...&#39;;
+    
+        textContent.appendChild(postTitleContainer);
+        textContent.appendChild(summary);
+        textContent.appendChild(readMoreBtn);
+    
+        const labelPost = document.createElement(&#39;div&#39;);
+        labelPost.classList.add(&#39;label-post&#39;);
+        
+        labelPost.appendChild(thumbContainer);
+        labelPost.appendChild(textContent);
+    
+        labelPostsContainer.appendChild(labelPost);
+    });
+    
+    }
+    
+    const displayLabelPosts = (posts) =&gt; {
+        populateLabelPosts(posts.feed.entry);
+    }
+    
+</script>
+
+<script src='/feeds/posts/summary/-/AI?max-results=3&amp;alt=json-in-script&amp;callback=displayLabelPosts'/>
+
+</b:if>
